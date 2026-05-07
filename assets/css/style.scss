@@ -1,0 +1,35 @@
+---
+---
+@import "{{ site.theme }}";
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: #e8e8ff;
+  background:
+    radial-gradient(circle at center, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.9) 18%, rgba(8,8,20,0.95) 35%, rgba(3,3,10,1) 60%, #000 100%),
+    radial-gradient(circle at 50% 50%, rgba(120, 0, 255, 0.25), transparent 30%),
+    linear-gradient(180deg, #020205, #000);
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  left: 50%;
+  top: 42%;
+  width: 34vw;
+  height: 34vw;
+  max-width: 420px;
+  max-height: 420px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(0,0,0,1) 0 35%, rgba(0,0,0,0.2) 42%, transparent 65%);
+  box-shadow:
+    0 0 40px 18px rgba(140, 0, 255, 0.16),
+    0 0 120px 40px rgba(40, 0, 90, 0.25);
+  pointer-events: none;
+  filter: blur(2px);
+}
