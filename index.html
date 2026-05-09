@@ -2,47 +2,65 @@
 <html>
 
 <head>
-    <title>Romeo's portfolio</title>
+    <title>Romeo's Portfolio</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
     <nav>
-        <a href="#about">about</a>
-        <a href="#internship">Internship</a>
-        <a href="#projects">Projects</a>
-        <a href="#learnings">Learnings</a>
-        <a href="#contact">Contact</a>
+        <button onclick="showPage('home')">Home</button>
+        <button onclick="showPage('about')">About</button>
+        <button onclick="showPage('internship')">Internship</button>
+        <button onclick="showPage('projects')">Projects</button>
+        <button onclick="showPage('learnings')">Learnings</button>
+        <button onclick="showPage('contact')">Contact</button>
     </nav>
 
-    <h1>Romeo's portfolio</h1>
-    <p>Student from Paris.</p>
-
-    <section id="profile">
-        <h2>Profile</h2>
-        <p>About me here.</p>
+    <!-- HOME -->
+    <section id="home" class="page">
+        <h1>Romeo's Portfolio</h1>
+        <p>Student from Paris.</p>
     </section>
 
-    <section id="internship">
-        <h2>Internship</h2>
+    <!-- ABOUT -->
+    <section id="about" class="page hidden">
+        <h1>About Me</h1>
+        <p>Write your profile here.</p>
+    </section>
+
+    <!-- INTERNSHIP -->
+    <section id="internship" class="page hidden">
+        <h1>Internship</h1>
         <p>Internship info here.</p>
     </section>
 
-    <section id="projects">
-        <h2>Projects</h2>
+    <!-- PROJECTS -->
+    <section id="projects" class="page hidden">
+        <h1>Projects</h1>
         <p>Projects here.</p>
     </section>
 
-    <section id="learnings">
-        <h2>Learnings</h2>
+    <!-- LEARNINGS -->
+    <section id="learnings" class="page hidden">
+        <h1>Learnings</h1>
         <p>Things I learned here.</p>
     </section>
 
-    <section id="contact">
-        <h2>Contact</h2>
-        <p>Contact info here.</p>
+    <!-- CONTACT -->
+    <section id="contact" class="page hidden">
+        <h1>Contact</h1>
+        <p>Email: your@email.com</p>
     </section>
+
+    <script>
+        function showPage(pageId) {
+            let pages = document.querySelectorAll('.page');
+            pages.forEach(p => p.classList.add('hidden'));
+
+            document.getElementById(pageId).classList.remove('hidden');
+        }
+    </script>
 
 </body>
 </html>
