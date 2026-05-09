@@ -1,64 +1,133 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Romeo's Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        body {
+            display: flex;
+            min-height: 100vh;
+            font-family: Georgia, serif;
+            background: #f5f4f0;
+            color: #1a1a1a;
+        }
+
+        /* LEFT SIDEBAR */
+        aside {
+            width: 200px;
+            min-height: 100vh;
+            background: #1a1a1a;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        aside .logo {
+            color: #f5f4f0;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 0 24px 32px;
+            border-bottom: 1px solid #333;
+            margin-bottom: 16px;
+        }
+
+        aside button {
+            background: none;
+            border: none;
+            color: #aaa;
+            text-align: left;
+            padding: 12px 24px;
+            font-size: 0.95rem;
+            font-family: Georgia, serif;
+            cursor: pointer;
+            transition: color 0.2s, background 0.2s;
+            letter-spacing: 0.03em;
+        }
+
+        aside button:hover,
+        aside button.active {
+            color: #f5f4f0;
+            background: #2e2e2e;
+        }
+
+        /* MAIN CONTENT */
+        main {
+            margin-left: 200px;
+            flex: 1;
+            padding: 60px 56px;
+        }
+
+        .page { display: none; }
+        .page.active { display: block; }
+
+        .page h1 {
+            font-size: 2.4rem;
+            font-weight: normal;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .page .subtitle {
+            color: #777;
+            font-size: 1rem;
+            margin-top: 4px;
+        }
+    </style>
+</head>
 <body>
 
-    <nav>
-        <button onclick="showPage('home')">Home</button>
+    <!-- LEFT SIDEBAR -->
+    <aside>
+        <div class="logo">Romeo</div>
+        <button onclick="showPage('home')" class="active">Home</button>
         <button onclick="showPage('about')">About</button>
         <button onclick="showPage('internship')">Internship</button>
         <button onclick="showPage('projects')">Projects</button>
         <button onclick="showPage('learnings')">Learnings</button>
         <button onclick="showPage('contact')">Contact</button>
-    </nav>
+    </aside>
 
-    <!-- HOME -->
-    <section id="home" class="page">
-        <h1>Romeo's Portfolio</h1>
-        <p>Student from Paris.</p>
-    </section>
+    <!-- MAIN CONTENT -->
+    <main>
 
-    <!-- ABOUT -->
-    <section id="about" class="page hidden">
-        <h1>About Me</h1>
-        <p>Write your profile here.</p>
-    </section>
+        <section id="home" class="page active">
+            <h1>Romeo's Portfolio</h1>
+            <p class="subtitle">Student from Paris.</p>
+        </section>
 
-    <!-- INTERNSHIP -->
-    <section id="internship" class="page hidden">
-        <h1>Internship</h1>
-        <p>Internship info here.</p>
-    </section>
+        <section id="about" class="page">
+            <h1>About Me</h1>
+        </section>
 
-    <!-- PROJECTS -->
-    <section id="projects" class="page hidden">
-        <h1>Projects</h1>
-        <p>Projects here.</p>
-    </section>
+        <section id="internship" class="page">
+            <h1>Internship</h1>
+        </section>
 
-    <!-- LEARNINGS -->
-    <section id="learnings" class="page hidden">
-        <h1>Learnings</h1>
-        <p>Things I learned here.</p>
-    </section>
+        <section id="projects" class="page">
+            <h1>Projects</h1>
+        </section>
 
-    <!-- CONTACT -->
-    <section id="contact" class="page hidden">
-        <h1>Contact</h1>
-        <p>Email: rockoy0218@gmail.com</p>
-    </section>
+        <section id="learnings" class="page">
+            <h1>Learnings</h1>
+        </section>
+
+        <section id="contact" class="page">
+            <h1>Contact</h1>
+            <p class="subtitle">rockoy0218@gmail.com</p>
+        </section>
+
+    </main>
 
     <script>
         function showPage(pageId) {
-            let pages = document.querySelectorAll('.page');
-            pages.forEach(p => p.classList.add('hidden'));
-
-            document.getElementById(pageId).classList.remove('hidden');
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            document.querySelectorAll('aside button').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
         }
     </script>
 
