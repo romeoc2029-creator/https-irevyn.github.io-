@@ -1,135 +1,674 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Romeo's Portfolio</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+  <meta charset="UTF-8"/>
+  <title>Romeo's Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #03060f;
+      --blue1:    #0a1628;
+      --blue2:    #0d2348;
+      --accent:   #4d9fff;
+      --accent2:  #a8d4ff;
+      --glow:     rgba(77,159,255,0.18);
+      --text:     #e8f0ff;
+      --muted:    #4a6080;
+      --glass:    rgba(10,22,50,0.55);
+      --border:   rgba(77,159,255,0.12);
+    }
 
-        body {
-            display: flex;
-            min-height: 100vh;
-            font-family: Georgia, serif;
-            background: #f5f4f0;
-            color: #1a1a1a;
-        }
+    * { margin:0; padding:0; box-sizing:border-box; }
 
-        /* LEFT SIDEBAR */
-        aside {
-            width: 200px;
-            min-height: 100vh;
-            background: #1a1a1a;
-            display: flex;
-            flex-direction: column;
-            padding: 40px 0;
-            position: fixed;
-            top: 0;
-            left: 0;
-        }
+    html { scroll-behavior: smooth; }
 
-        aside .logo {
-            color: #f5f4f0;
-            font-size: 1.1rem;
-            font-weight: bold;
-            padding: 0 24px 32px;
-            border-bottom: 1px solid #333;
-            margin-bottom: 16px;
-        }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
 
-        aside button {
-            background: none;
-            border: none;
-            color: #aaa;
-            text-align: left;
-            padding: 12px 24px;
-            font-size: 0.95rem;
-            font-family: Georgia, serif;
-            cursor: pointer;
-            transition: color 0.2s, background 0.2s;
-            letter-spacing: 0.03em;
-        }
+    /* ── CURSOR ── */
+    *, *::before, *::after { cursor: none !important; }
 
-        aside button:hover,
-        aside button.active {
-            color: #f5f4f0;
-            background: #2e2e2e;
-        }
+    #cursor {
+      position: fixed;
+      width: 10px; height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: transform 0.1s, width 0.3s, height 0.3s, opacity 0.3s;
+      mix-blend-mode: screen;
+    }
 
-        /* MAIN CONTENT */
-        main {
-            margin-left: 200px;
-            flex: 1;
-            padding: 60px 56px;
-        }
+    #cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(77,159,255,0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%,-50%);
+      transition: left 0.12s ease, top 0.12s ease, width 0.3s, height 0.3s, opacity 0.3s;
+    }
 
-        .page { display: none; }
-        .page.active { display: block; }
+    /* ── BACKGROUND ── */
+    .bg-wrap {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
 
-        .page h1 {
-            font-size: 2.4rem;
-            font-weight: normal;
-            margin-bottom: 8px;
-            letter-spacing: -0.02em;
-        }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0;
+      animation: orbFloat 0.8s ease forwards;
+    }
 
-        .page .subtitle {
-            color: #777;
-            font-size: 1rem;
-            margin-top: 4px;
-        }
-    </style>
+    .orb1 {
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, #0d3a8e 0%, transparent 70%);
+      top: -200px; right: -100px;
+      animation-delay: 0.1s;
+      animation: orbFloat 1s ease forwards, drift1 20s ease-in-out infinite alternate 1s;
+    }
+    .orb2 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, #051d5a 0%, transparent 70%);
+      bottom: -100px; left: 200px;
+      animation: orbFloat 1s ease forwards 0.3s, drift2 25s ease-in-out infinite alternate 1.3s;
+    }
+    .orb3 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #1a4a9e 0%, transparent 70%);
+      top: 40%; right: 30%;
+      animation: orbFloat 1s ease forwards 0.5s, drift3 18s ease-in-out infinite alternate 1.5s;
+    }
+
+    @keyframes orbFloat {
+      to { opacity: 0.5; }
+    }
+    @keyframes drift1 {
+      from { transform: translate(0,0); }
+      to   { transform: translate(-60px, 40px); }
+    }
+    @keyframes drift2 {
+      from { transform: translate(0,0); }
+      to   { transform: translate(50px,-30px); }
+    }
+    @keyframes drift3 {
+      from { transform: translate(0,0) scale(1); }
+      to   { transform: translate(-30px, 50px) scale(1.1); }
+    }
+
+    /* fine grid */
+    .grid {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(77,159,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(77,159,255,0.03) 1px, transparent 1px);
+      background-size: 80px 80px;
+    }
+
+    /* grain */
+    .grain {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    /* ── LAYOUT ── */
+    .layout {
+      display: flex;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ── SIDEBAR ── */
+    aside {
+      width: 280px;
+      height: 100vh;
+      position: fixed;
+      top: 0; left: 0;
+      background: var(--glass);
+      backdrop-filter: blur(28px) saturate(1.4);
+      -webkit-backdrop-filter: blur(28px) saturate(1.4);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 52px 0;
+      z-index: 100;
+    }
+
+    /* subtle inner light on sidebar top */
+    aside::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.6;
+    }
+
+    .logo-wrap {
+      padding: 0 40px 40px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 28px;
+    }
+
+    .logo-name {
+      font-family: 'DM Serif Display', serif;
+      font-weight: 400;
+      font-size: 1.9rem;
+      color: #fff;
+      letter-spacing: 0.01em;
+      line-height: 1;
+    }
+
+    .logo-tag {
+      font-size: 0.62rem;
+      letter-spacing: 0.28em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-top: 8px;
+      font-weight: 300;
+    }
+
+    nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 0 24px;
+    }
+
+    nav button {
+      background: none;
+      border: none;
+      color: var(--muted);
+      text-align: left;
+      padding: 14px 16px;
+      font-size: 0.72rem;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      cursor: none;
+      transition: color 0.3s ease, background 0.3s ease;
+      border-radius: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    nav button::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(77,159,255,0.08), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+      border-radius: 10px;
+    }
+
+    nav button:hover { color: var(--accent2); }
+    nav button:hover::after { opacity: 1; }
+
+    nav button.active {
+      color: #fff;
+      background: rgba(77,159,255,0.1);
+      border: 1px solid rgba(77,159,255,0.2);
+    }
+
+    nav button.active::after { opacity: 1; }
+
+    /* glowing dot on active */
+    nav button.active::before {
+      content: '';
+      position: absolute;
+      right: 16px; top: 50%;
+      transform: translateY(-50%);
+      width: 5px; height: 5px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent);
+    }
+
+    .sidebar-bottom {
+      margin-top: auto;
+      padding: 0 40px;
+    }
+
+    .sidebar-bottom .city {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .status-dot {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .dot {
+      width: 6px; height: 6px;
+      background: #3dff9a;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #3dff9a;
+      animation: blink 2.5s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .status-dot span {
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #3dff9a;
+    }
+
+    /* ── MAIN ── */
+    main {
+      margin-left: 280px;
+      min-height: 100vh;
+      padding: 0;
+      flex: 1;
+    }
+
+    /* ── SECTIONS (full-screen scroll) ── */
+    .page {
+      display: none;
+      min-height: 100vh;
+      padding: 100px 90px 80px;
+      position: relative;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .page.active {
+      display: flex;
+      animation: pageIn 0.7s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+
+    @keyframes pageIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── TYPOGRAPHY ── */
+    .eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      opacity: 0;
+      animation: slideIn 0.6s ease forwards 0.15s;
+    }
+
+    .eyebrow::before {
+      content: '';
+      width: 32px; height: 1px;
+      background: var(--accent);
+      opacity: 0.5;
+    }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-weight: 400;
+      line-height: 1.05;
+      color: #fff;
+      opacity: 0;
+      animation: slideIn 0.7s ease forwards 0.25s;
+    }
+
+    .page#home h1 { font-size: clamp(3.5rem, 7vw, 6.5rem); }
+    .page:not(#home) h1 { font-size: clamp(3rem, 5vw, 5rem); }
+
+    h1 em {
+      font-style: italic;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .tagline {
+      font-size: 0.9rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 16px;
+      opacity: 0;
+      animation: slideIn 0.7s ease forwards 0.35s;
+    }
+
+    /* divider */
+    .divider {
+      width: 0;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      margin: 40px 0;
+      animation: expand 0.8s ease forwards 0.45s;
+    }
+
+    @keyframes expand {
+      to { width: 80px; }
+    }
+
+    /* ── HOME META CARDS ── */
+    .meta-grid {
+      display: flex;
+      gap: 16px;
+      margin-top: 10px;
+      opacity: 0;
+      animation: slideIn 0.7s ease forwards 0.55s;
+    }
+
+    .meta-card {
+      background: rgba(77,159,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 24px;
+      backdrop-filter: blur(10px);
+      transition: background 0.3s, border-color 0.3s, transform 0.3s;
+    }
+
+    .meta-card:hover {
+      background: rgba(77,159,255,0.1);
+      border-color: rgba(77,159,255,0.3);
+      transform: translateY(-3px);
+    }
+
+    .meta-label {
+      font-size: 0.58rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .meta-value {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    /* ── CONTACT ── */
+    .contact-wrap {
+      opacity: 0;
+      animation: slideIn 0.7s ease forwards 0.45s;
+    }
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.8rem;
+      color: var(--accent2);
+      text-decoration: none;
+      margin-top: 8px;
+      position: relative;
+      transition: color 0.3s;
+    }
+
+    .contact-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width 0.4s ease;
+    }
+
+    .contact-link:hover { color: #fff; }
+    .contact-link:hover::after { width: 100%; }
+
+    /* ── SCROLL HINT ── */
+    .scroll-hint {
+      position: absolute;
+      bottom: 44px; left: 90px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0;
+      animation: slideIn 0.8s ease forwards 0.9s;
+    }
+
+    .scroll-line {
+      width: 36px; height: 1px;
+      background: var(--muted);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: var(--accent);
+      animation: scanline 2s ease-in-out infinite;
+    }
+
+    @keyframes scanline {
+      0%   { left: -100%; }
+      50%  { left: 100%; }
+      100% { left: 100%; }
+    }
+
+    /* ── BIG PAGE NUMBER ── */
+    .pg-number {
+      position: absolute;
+      bottom: 40px; right: 80px;
+      font-family: 'DM Serif Display', serif;
+      font-size: 7rem;
+      color: rgba(77,159,255,0.05);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+  </style>
 </head>
 <body>
 
-    <!-- LEFT SIDEBAR -->
+  <!-- Custom cursor -->
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- Background -->
+  <div class="bg-wrap">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+  </div>
+  <div class="grid"></div>
+  <div class="grain"></div>
+
+  <div class="layout">
+
+    <!-- Sidebar -->
     <aside>
-        <div class="logo">Placeholder</div>
-        <button onclick="showPage('home')" class="active">Home</button>
-        <button onclick="showPage('about')">About</button>
-        <button onclick="showPage('internship')">Internship</button>
-        <button onclick="showPage('projects')">Projects</button>
-        <button onclick="showPage('learnings')">Learnings</button>
-        <button onclick="showPage('contact')">Contact</button>
+      <div class="logo-wrap">
+        <div class="logo-name">Romeo</div>
+        <div class="logo-tag">Portfolio · 2025</div>
+      </div>
+      <nav>
+        <button onclick="showPage('home',this)" class="active">Home</button>
+        <button onclick="showPage('about',this)">About</button>
+        <button onclick="showPage('internship',this)">Internship</button>
+        <button onclick="showPage('projects',this)">Projects</button>
+        <button onclick="showPage('learnings',this)">Learnings</button>
+        <button onclick="showPage('contact',this)">Contact</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="city">Paris, France</div>
+        <div class="status-dot">
+          <div class="dot"></div>
+          <span>Available</span>
+        </div>
+      </div>
     </aside>
 
-    <!-- MAIN CONTENT -->
+    <!-- Main -->
     <main>
 
-        <section id="home" class="page active">
-            <h1>Romeo's Portfolio</h1>
-            <p class="subtitle">Student from Paris.</p>
-        </section>
+      <section id="home" class="page active">
+        <div class="eyebrow">Welcome</div>
+        <h1>Romeo's<br><em>Portfolio</em></h1>
+        <p class="tagline">Student · Paris, France</p>
+        <div class="divider"></div>
+        <div class="meta-grid">
+          <div class="meta-card">
+            <div class="meta-label">Status</div>
+            <div class="meta-value">Available</div>
+          </div>
+          <div class="meta-card">
+            <div class="meta-label">Based in</div>
+            <div class="meta-value">Paris</div>
+          </div>
+          <div class="meta-card">
+            <div class="meta-label">Open to</div>
+            <div class="meta-value">Internships</div>
+          </div>
+        </div>
+        <div class="scroll-hint">
+          <div class="scroll-line"></div>
+          Navigate via sidebar
+        </div>
+        <div class="pg-number">00</div>
+      </section>
 
-        <section id="about" class="page">
-            <h1>About Me</h1>
-        </section>
+      <section id="about" class="page">
+        <div class="eyebrow">01 — About</div>
+        <h1>About<br><em>Me</em></h1>
+        <div class="divider"></div>
+        <div class="pg-number">01</div>
+      </section>
 
-        <section id="internship" class="page">
-            <h1>Internship</h1>
-        </section>
+      <section id="internship" class="page">
+        <div class="eyebrow">02 — Experience</div>
+        <h1>Intern<em>ship</em></h1>
+        <div class="divider"></div>
+        <div class="pg-number">02</div>
+      </section>
 
-        <section id="projects" class="page">
-            <h1>Projects</h1>
-        </section>
+      <section id="projects" class="page">
+        <div class="eyebrow">03 — Work</div>
+        <h1>Pro<em>jects</em></h1>
+        <div class="divider"></div>
+        <div class="pg-number">03</div>
+      </section>
 
-        <section id="learnings" class="page">
-            <h1>Learnings</h1>
-        </section>
+      <section id="learnings" class="page">
+        <div class="eyebrow">04 — Growth</div>
+        <h1>Learn<em>ings</em></h1>
+        <div class="divider"></div>
+        <div class="pg-number">04</div>
+      </section>
 
-        <section id="contact" class="page">
-            <h1>Contact</h1>
-            <p class="subtitle">rockoy0218@gmail.com</p>
-        </section>
+      <section id="contact" class="page">
+        <div class="eyebrow">05 — Contact</div>
+        <h1>Get in<br><em>Touch</em></h1>
+        <div class="divider"></div>
+        <div class="contact-wrap">
+          <a class="contact-link" href="mailto:rockoy0218@gmail.com">
+            rockoy0218@gmail.com
+          </a>
+        </div>
+        <div class="pg-number">05</div>
+      </section>
 
     </main>
+  </div>
 
-    <script>
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            document.querySelectorAll('aside button').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
-        }
-    </script>
+  <script>
+    // Page switching
+    function showPage(id, btn) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+      const el = document.getElementById(id);
+      el.classList.add('active');
+      // re-trigger animations
+      el.querySelectorAll('.eyebrow, h1, .tagline, .divider, .meta-grid, .contact-wrap, .scroll-hint').forEach(el => {
+        el.style.animation = 'none';
+        el.offsetHeight;
+        el.style.animation = '';
+      });
+      btn.classList.add('active');
+    }
+
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring   = document.getElementById('cursor-ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top  = my + 'px';
+    });
+
+    // ring lags slightly
+    function animateRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    // cursor expand on hover
+    document.querySelectorAll('button, a').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.width  = '20px';
+        cursor.style.height = '20px';
+        ring.style.width    = '56px';
+        ring.style.height   = '56px';
+        ring.style.opacity  = '0.5';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.width  = '10px';
+        cursor.style.height = '10px';
+        ring.style.width    = '36px';
+        ring.style.height   = '36px';
+        ring.style.opacity  = '1';
+      });
+    });
+  </script>
 
 </body>
 </html>
