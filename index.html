@@ -155,7 +155,6 @@
       z-index: 100;
     }
 
-    /* subtle inner light on sidebar top */
     aside::before {
       content: '';
       position: absolute;
@@ -235,7 +234,6 @@
 
     nav button.active::after { opacity: 1; }
 
-    /* glowing dot on active */
     nav button.active::before {
       content: '';
       position: absolute;
@@ -294,7 +292,7 @@
       flex: 1;
     }
 
-    /* ── SECTIONS (full-screen scroll) ── */
+    /* ── SECTIONS ── */
     .page {
       display: none;
       min-height: 100vh;
@@ -370,7 +368,6 @@
       animation: slideIn 0.7s ease forwards 0.35s;
     }
 
-    /* divider */
     .divider {
       width: 0;
       height: 1px;
@@ -421,6 +418,66 @@
       color: var(--text);
     }
 
+    /* ── BODY TEXT ── */
+    .body-text {
+      max-width: 620px;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: rgba(232,240,255,0.65);
+      opacity: 0;
+      animation: slideIn 0.7s ease forwards 0.45s;
+    }
+
+    .body-text p + p {
+      margin-top: 1.2em;
+    }
+
+    /* ── INFO CARDS ── */
+    .info-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 680px;
+      opacity: 0;
+      animation: slideIn 0.7s ease forwards 0.55s;
+    }
+
+    .info-card {
+      background: rgba(77,159,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px 28px;
+      backdrop-filter: blur(10px);
+      transition: background 0.3s, border-color 0.3s, transform 0.3s;
+    }
+
+    .info-card:hover {
+      background: rgba(77,159,255,0.09);
+      border-color: rgba(77,159,255,0.25);
+      transform: translateX(4px);
+    }
+
+    .info-card-label {
+      font-size: 0.58rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .info-card-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.15rem;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .info-card-desc {
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: rgba(232,240,255,0.55);
+    }
+
     /* ── CONTACT ── */
     .contact-wrap {
       opacity: 0;
@@ -451,6 +508,14 @@
 
     .contact-link:hover { color: #fff; }
     .contact-link:hover::after { width: 100%; }
+
+    .contact-sub {
+      margin-top: 32px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 480px;
+    }
 
     /* ── SCROLL HINT ── */
     .scroll-hint {
@@ -504,11 +569,9 @@
 </head>
 <body>
 
-  <!-- Custom cursor -->
   <div id="cursor"></div>
   <div id="cursor-ring"></div>
 
-  <!-- Background -->
   <div class="bg-wrap">
     <div class="orb orb1"></div>
     <div class="orb orb2"></div>
@@ -519,7 +582,6 @@
 
   <div class="layout">
 
-    <!-- Sidebar -->
     <aside>
       <div class="logo-wrap">
         <div class="logo-name">Romeo</div>
@@ -542,9 +604,9 @@
       </div>
     </aside>
 
-    <!-- Main -->
     <main>
 
+      <!-- HOME -->
       <section id="home" class="page active">
         <div class="eyebrow">Welcome</div>
         <h1>Romeo's<br><em>Portfolio</em></h1>
@@ -571,34 +633,88 @@
         <div class="pg-number">00</div>
       </section>
 
+      <!-- ABOUT -->
       <section id="about" class="page">
         <div class="eyebrow">01 — About</div>
         <h1>About<br><em>Me</em></h1>
         <div class="divider"></div>
+        <div class="body-text">
+          <p>Placeholder — write a short introduction about yourself here. Who are you, where are you from, and what drives you?</p>
+          <p>Placeholder — add a second paragraph with more detail: your studies, your interests, or what kind of work excites you most.</p>
+        </div>
         <div class="pg-number">01</div>
       </section>
 
+      <!-- INTERNSHIP -->
       <section id="internship" class="page">
         <div class="eyebrow">02 — Experience</div>
         <h1>Intern<em>ship</em></h1>
         <div class="divider"></div>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-card-label">Company · Year</div>
+            <div class="info-card-title">Placeholder Company Name</div>
+            <div class="info-card-desc">Placeholder — describe your role, what you worked on, the team, and the technologies or skills involved.</div>
+          </div>
+          <div class="info-card">
+            <div class="info-card-label">Key Responsibilities</div>
+            <div class="info-card-title">Placeholder Responsibility</div>
+            <div class="info-card-desc">Placeholder — describe a specific task, project, or achievement from your internship that you're proud of.</div>
+          </div>
+        </div>
         <div class="pg-number">02</div>
       </section>
 
+      <!-- PROJECTS -->
       <section id="projects" class="page">
         <div class="eyebrow">03 — Work</div>
         <h1>Pro<em>jects</em></h1>
         <div class="divider"></div>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-card-label">Project 01 · Placeholder Stack</div>
+            <div class="info-card-title">Placeholder Project Name</div>
+            <div class="info-card-desc">Placeholder — briefly describe what this project does, why you built it, and what technologies you used.</div>
+          </div>
+          <div class="info-card">
+            <div class="info-card-label">Project 02 · Placeholder Stack</div>
+            <div class="info-card-title">Placeholder Project Name</div>
+            <div class="info-card-desc">Placeholder — briefly describe what this project does, why you built it, and what technologies you used.</div>
+          </div>
+          <div class="info-card">
+            <div class="info-card-label">Project 03 · Placeholder Stack</div>
+            <div class="info-card-title">Placeholder Project Name</div>
+            <div class="info-card-desc">Placeholder — briefly describe what this project does, why you built it, and what technologies you used.</div>
+          </div>
+        </div>
         <div class="pg-number">03</div>
       </section>
 
+      <!-- LEARNINGS -->
       <section id="learnings" class="page">
         <div class="eyebrow">04 — Growth</div>
         <h1>Learn<em>ings</em></h1>
         <div class="divider"></div>
+        <div class="body-text">
+          <p>Placeholder — reflect on what you've learned throughout your studies, internships, or projects. What skills have you developed?</p>
+          <p>Placeholder — add thoughts on soft skills, mindset shifts, or lessons that surprised you along the way.</p>
+        </div>
+        <div class="info-grid" style="margin-top: 32px;">
+          <div class="info-card">
+            <div class="info-card-label">Skill Area</div>
+            <div class="info-card-title">Placeholder Skill</div>
+            <div class="info-card-desc">Placeholder — describe how you developed this skill and what it means for your future work.</div>
+          </div>
+          <div class="info-card">
+            <div class="info-card-label">Skill Area</div>
+            <div class="info-card-title">Placeholder Skill</div>
+            <div class="info-card-desc">Placeholder — describe how you developed this skill and what it means for your future work.</div>
+          </div>
+        </div>
         <div class="pg-number">04</div>
       </section>
 
+      <!-- CONTACT -->
       <section id="contact" class="page">
         <div class="eyebrow">05 — Contact</div>
         <h1>Get in<br><em>Touch</em></h1>
@@ -607,6 +723,7 @@
           <a class="contact-link" href="mailto:rockoy0218@gmail.com">
             rockoy0218@gmail.com
           </a>
+          <p class="contact-sub">Placeholder — add a short note here inviting people to reach out. For example: what you're looking for, your availability, or where else they can find you (LinkedIn, GitHub, etc.).</p>
         </div>
         <div class="pg-number">05</div>
       </section>
@@ -615,14 +732,12 @@
   </div>
 
   <script>
-    // Page switching
     function showPage(id, btn) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
       const el = document.getElementById(id);
       el.classList.add('active');
-      // re-trigger animations
-      el.querySelectorAll('.eyebrow, h1, .tagline, .divider, .meta-grid, .contact-wrap, .scroll-hint').forEach(el => {
+      el.querySelectorAll('.eyebrow, h1, .tagline, .divider, .meta-grid, .body-text, .info-grid, .contact-wrap, .scroll-hint').forEach(el => {
         el.style.animation = 'none';
         el.offsetHeight;
         el.style.animation = '';
@@ -630,7 +745,6 @@
       btn.classList.add('active');
     }
 
-    // Custom cursor
     const cursor = document.getElementById('cursor');
     const ring   = document.getElementById('cursor-ring');
     let mx = 0, my = 0, rx = 0, ry = 0;
@@ -641,7 +755,6 @@
       cursor.style.top  = my + 'px';
     });
 
-    // ring lags slightly
     function animateRing() {
       rx += (mx - rx) * 0.12;
       ry += (my - ry) * 0.12;
@@ -651,7 +764,6 @@
     }
     animateRing();
 
-    // cursor expand on hover
     document.querySelectorAll('button, a').forEach(el => {
       el.addEventListener('mouseenter', () => {
         cursor.style.width  = '20px';
